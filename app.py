@@ -46,9 +46,11 @@ st.markdown(
 
 # App title
 st.title("🎓 Student Management System")
+st.write("------------------------------")
 menu = st.sidebar.selectbox(
     "Menu",
     [
+        "Home",
         "Add Student",
         "View All Students",
         "Delete Student",
@@ -57,30 +59,32 @@ menu = st.sidebar.selectbox(
     ]
 )
 
-# Input fields
-name = st.text_input("Enter Student Name")
 
-age = st.number_input(
+if menu=="Home":
+    st.header("Welcome to SMS")
+    st.header("Manage your student Details")
+# Add student
+if menu == "Add Student":
+    name = st.text_input("Enter Student Name")
+
+    age = st.number_input(
     "Enter Age",
     min_value=1,
     max_value=100
-)
+    )
 
-branch = st.selectbox(
+    branch = st.selectbox(
     "Select Branch",
     ["CSE", "ECE", "EEE", "MECH", "CIVIL"]
-)
+    )
 
-marks = st.number_input(
+    marks = st.number_input(
     "Enter Marks",
     min_value=0,
     max_value=100
-)
-if marks < 0 or marks > 100:
-    st.error("Invalid Marks")
-
-# Add student
-if menu == "Add Student":
+    )
+    if marks < 0 or marks > 100:
+        st.error("Invalid Marks")
     if st.button("Add Student"):
         if name == "":
             st.error("Name cannot be empty")
