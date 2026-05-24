@@ -6,6 +6,11 @@ import pandas as pd
 conn = sqlite3.connect("students.db")
 
 cursor = conn.cursor()
+st.set_page_config(
+    page_title="Student Management System",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
 
 st.markdown(
     """
@@ -47,18 +52,24 @@ st.markdown(
 # App title
 st.title("🎓 Student Management System")
 st.write("------------------------------")
-menu = st.sidebar.selectbox(
-    "Menu",
-    [
-        "Home",
-        "Add Student",
-        "View All Students",
-        "Delete Student",
-        "Update Student",
-        "Search Student"
-    ]
-)
+st.sidebar.title("Navigation")
 
+menu = "Home"
+
+if st.sidebar.button("Home"):
+    menu = "Home"
+
+if st.sidebar.button("Add Student"):
+    menu = "Add Student"
+
+if st.sidebar.button("View All Students"):
+    menu = "View All Students"
+
+if st.sidebar.button("Delete Student"):
+    menu = "Delete Student"
+
+if st.sidebar.button("Update Student"):
+    menu = "Update Student"
 
 if menu=="Home":
     st.header("Welcome to SMS")
@@ -105,22 +116,21 @@ if menu == "Add Student":
 # View students
 if menu == "View All Students":
 
-    if st.button("View All Students"):
+    
+    cursor.execute("SELECT * FROM students")
 
-        cursor.execute("SELECT * FROM students")
+    data = cursor.fetchall()
 
-        data = cursor.fetchall()
+    
 
-        
+    df = pd.DataFrame(
+        data,
+        columns=["ID", "Name", "Age", "Branch", "Marks"]
+    )
 
-        df = pd.DataFrame(
-            data,
-            columns=["ID", "Name", "Age", "Branch", "Marks"]
-        )
+    st.dataframe(df)
 
-        st.dataframe(df)
-
-        st.success("Student viewed successfully!")
+    st.success("Student viewed successfully!")
 
 
 if menu == "Delete Student":
@@ -197,4 +207,4 @@ if menu =="Update Student":
         conn.commit()
 
         st.success("Student Updated Successfully!")
-# Search student
+
